@@ -1,8 +1,10 @@
-pub trait Item {
+// In Rust abstraction is implemented using trait
+trait Item {
     fn get_name(&self) -> &String;
 
     fn get_caloric_value(&self) -> f64;
 }
+
 
 #[derive(Clone)]
 pub struct Pizza {
@@ -13,6 +15,8 @@ pub struct Pizza {
 }
 
 impl Pizza {
+    /* This method is a constructor method. When it is called,
+    it returns an instance of the object.  */
     fn new(name: &String, ingredients: Vec<Ingredient>, price: u16) -> Pizza {
         Pizza {
             name: String::from(name),
@@ -22,10 +26,12 @@ impl Pizza {
         }
     }
 
-    fn get_price(&self) -> u16 {
+    // This method is a getter. It access a private value and return it.
+    pub fn get_price(&self) -> u16 {
         self.price
     }
 
+    // The methods bellow are part of a state design pattern.
     fn order_pizza(&mut self) {
         self.state = String::from("Ordered");
     }
@@ -39,6 +45,7 @@ impl Pizza {
     }
 }
 
+// Inherit functionality from abstract trait Item.
 impl Item for Pizza {
     fn get_name(&self) -> &String {
         &self.name
@@ -113,6 +120,7 @@ impl Drink {
     }
 }
 
+// Inherit functionality from abstract trait Item
 impl Item for Drink {
     fn get_name(&self) -> &String {
         &self.name
@@ -129,6 +137,14 @@ pub struct Menu {
 }
 
 impl Menu {
+    /* 
+    Implementation of polymorphism in Rust. 
+    This method receive items parameter, which is a vector of
+    type Item. This means that we can pass objects, which implement
+    the trait Item. In this example Pizza and Drink have
+    implementation of this trait.
+    */ 
+
     fn list_items_names<T: Item>(&self, items: &Vec<T>, message: &str) {
         println!("{}", message);
         for (index, item) in items.iter().enumerate() {
@@ -136,12 +152,14 @@ impl Menu {
         }
     }
 
+    // Actual usage of list_items_names method - passing vector of pizzas and after that vector of drinks.
     pub fn list_menu(&self) {
         self.list_items_names(&self.drinks, "Drinks:");
         self.list_items_names(&self.pizzas, "Pizzas:");
     }
 }
 
+// Builder object of Menu object.
 pub struct MenuBuilder {
     pizzas: Vec<Pizza>,
     drinks: Vec<Drink>,
@@ -170,6 +188,13 @@ impl MenuBuilder {
             pizzas: self.pizzas.clone(),
             drinks: self.drinks.clone(),
         }
+    }
+}
+
+// Implementation of destructor in Rust.
+impl Drop for MenuBuilder {
+    fn drop(&mut self) {
+        println!("The menu builder is being dropped!");
     }
 }
 

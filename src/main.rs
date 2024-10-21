@@ -1,6 +1,7 @@
 use rust_oop_article::{Drink, MenuBuilder, Order, PizzaBuilder, Product};
 
 fn main() {
+    // Create products
     let tomato_prod = Product::new("tomato", 18);
     let mozzarella_prod = Product::new("mozzarella", 280);
     let olive_oil = Product::new("olive_oil", 884);
@@ -10,6 +11,7 @@ fn main() {
     let meat = Product::new("meat", 350);
     let onion = Product::new("onion", 30);
 
+    // Create pizzas using builder design pattern
     let capricciosa = PizzaBuilder::new("Margherita", 20)
         .add_ingredient(&tomato_prod, 200)
         .add_ingredient(&mushrooms, 100)
@@ -42,6 +44,7 @@ fn main() {
         .add_ingredient(&basil, 20)
         .build_pizza();
 
+    // Create menu using builder design pattern
     let menu = MenuBuilder::new()
         .add_drink(Drink::new("Coca-Cola", 2, 400))
         .add_drink(Drink::new("Fanta", 2, 400))
@@ -55,25 +58,28 @@ fn main() {
         .add_pizza(vegetariana)
         .build_menu();
 
+    // Show the menu in the console
     menu.list_menu();
 
+    // Initialize order
     let mut order = Order::new(menu);
     
+    // Make order
     order.order_pizza(1, 2);
     order.order_drink(2, 2);
     order.order_drink(5, 2);
-
     order.order_pizza(4, 1);
     order.order_drink(1, 1);
 
+    // Finalize order
     order.finish_order();
 
+    // Cook and serve the order
     order.serve_drinks();
     order.cook_pizzas();
-
     order.serve_pizzas();
 
+    // Checkout and pay the order
     order.checkout_order();
     order.pay_order();
-    
 }
