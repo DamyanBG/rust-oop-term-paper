@@ -6,49 +6,35 @@ pub trait Item {
 
 #[derive(Clone)]
 pub struct Pizza {
-    pub name: String,
-    pub ingredients: Vec<Ingredient>,
-    pub additinal_ingredients: Option<Vec<Ingredient>>,
-    pub without_ingredients: Option<Vec<Ingredient>>,
-    pub size: Option<String>,
-    pub state: String,
-    pub price: u16,
+    name: String,
+    ingredients: Vec<Ingredient>,
+    state: String,
+    price: u16,
 }
 
 impl Pizza {
-    pub fn new(name: &String, ingredients: Vec<Ingredient>, price: u16) -> Pizza {
+    fn new(name: &String, ingredients: Vec<Ingredient>, price: u16) -> Pizza {
         Pizza {
             name: String::from(name),
             ingredients,
             state: String::from("Non ordered"),
-            additinal_ingredients: None,
-            size: None,
-            without_ingredients: None,
             price,
         }
     }
 
-    pub fn get_price(&self) -> u16 {
+    fn get_price(&self) -> u16 {
         self.price
     }
 
-    pub fn additional_ingredient(&mut self, ingredient: Ingredient) {
-        self.ingredients.push(ingredient);
-    }
-
-    pub fn remove_ingredient(&mut self, ingredient_name: &str) {
-        self.ingredients.retain(|ingredient| ingredient.name != ingredient_name);
-    }
-
-    pub fn order_pizza(&mut self) {
+    fn order_pizza(&mut self) {
         self.state = String::from("Ordered");
     }
 
-    pub fn cook_pizza(&mut self) {
+    fn cook_pizza(&mut self) {
         self.state = String::from("Cooking");
     }
 
-    pub fn serve_pizza(&mut self) {
+    fn serve_pizza(&mut self) {
         self.state = String::from("Seved");
     }
 }
